@@ -2,9 +2,13 @@ import httpInstance from "@/utils/http.js";
 
 
 // 获取banner图片列表
-export function getBannerAPI() {
+export function getBannerAPI(type = 1) {
+
     return httpInstance({
-        url: 'home/banner'
+        url: 'home/banner',
+        params: {
+            distributionSite: type
+        }
     })
 }
 
