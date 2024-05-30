@@ -1,12 +1,7 @@
-<script setup>
-
-</script>
+<script setup></script>
 
 <template>
-
-  <el-button type="primary">i am button</el-button>
+  <RouterView />
 </template>
 
-<style scoped>
-
-</style>
+<style lang="scss"></style>
