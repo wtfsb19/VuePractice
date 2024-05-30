@@ -1,10 +1,10 @@
 <script setup>
-import { useCategoryStore } from '@/stores/category'
-import { storeToRefs } from 'pinia'
+import {useCategoryStore} from '@/stores/category'
+import {storeToRefs} from 'pinia'
 // 获取store数据
 const categoryStore = useCategoryStore()
 //使用store中的categoryList
-const { categoryList } = storeToRefs(categoryStore)
+const {categoryList} = storeToRefs(categoryStore)
 </script>
 
 <template>
@@ -15,15 +15,21 @@ const { categoryList } = storeToRefs(categoryStore)
       </h1>
       <ul class="app-header-nav">
         <li class="home">
-          <RouterLink to="/">首页</RouterLink>
+          <RouterLink  to="/">首页</RouterLink>
         </li>
         <li class="home" v-for="item in categoryList" :key="item.id">
-          <RouterLink to="/">{{ item.name }}</RouterLink>
+          <RouterLink active-class="active" :to="{
+            name: 'category',
+            params: {
+              id: item.id
+            }
+          }">{{ item.name }}
+          </RouterLink>
         </li>
       </ul>
       <div class="search">
         <i class="iconfont icon-search"></i>
-        <input type="text" placeholder="搜一搜" />
+        <input type="text" placeholder="搜一搜"/>
       </div>
       <!-- 头部购物车 -->
     </div>
@@ -34,6 +40,7 @@ const { categoryList } = storeToRefs(categoryStore)
 .app-header {
 
   background: #fff;
+
   .container {
     display: flex;
     align-items: center;
