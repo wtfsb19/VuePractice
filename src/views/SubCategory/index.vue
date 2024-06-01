@@ -1,8 +1,8 @@
 <script setup>
-import { getCategoryFilterAPI } from "@/apis/subCategory.js";
-import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
-
+import {getCategoryFilterAPI, getSubCategoryAPI} from "@/apis/subCategory.js";
+import {ref, onMounted} from "vue";
+import {useRoute} from "vue-router";
+import GoodsItem from "@/views/Home/components/GoodsItem.vue";
 const route = useRoute()
 // 获取面包屑导航数据
 const categoryData = ref({})
@@ -10,7 +10,37 @@ const getCategoryFilter = async () => {
   const res = await getCategoryFilterAPI(route.params.id)
   categoryData.value = res.result
 }
-onMounted( () => getCategoryFilter())
+onMounted(() => getCategoryFilter())
+
+// 获取商品列表
+const goodsList = ref([])
+const reqData = ref({
+  categoryId: route.params.id,
+  page: 1,
+  pageSize: 20,
+  sortField: 'publishTime'
+})
+const getSubCategory = async () => {
+  const res = await getSubCategoryAPI(reqData.value)
+  goodsList.value = res.result.items
+}
+onMounted(() => getSubCategory())
+
+// 无限滚动
+const disabled = ref(false)
+const load =  async () => {
+  console.log('load')
+  // 当滚动到底部时，页码+1
+  reqData.value.page++
+  // 重新发送请求并将数据合并到goodsList中
+  const res = await getSubCategoryAPI(reqData.value)
+  goodsList.value = [...goodsList.value, ...res.result.items]
+  // 判断是否还有数据
+  if (res.result.items.length === 0) {
+      // 没有数据了，停止加载
+      disabled.value = true
+  }
+}
 
 </script>
 
@@ -34,14 +64,14 @@ onMounted( () => getCategoryFilter())
         <el-tab-pane label="最高人气" name="orderNum"></el-tab-pane>
         <el-tab-pane label="评论最多" name="evaluateNum"></el-tab-pane>
       </el-tabs>
-      <div class="body">
-         <!-- 商品列表-->
+      <div class="body" v-infinite-scroll="load" :infinite-scroll-disabled="disabled">
+        <!-- 商品列表-->
+        <GoodsItem v-for="good in goodsList" :good="good" :key="good.id"></GoodsItem>
       </div>
     </div>
   </div>
 
 </template>
-
 
 
 <style lang="scss" scoped>
