@@ -29,7 +29,11 @@ const router = createRouter({
         }
       ]
     },
-  ]
+  ],
+  // 滚动行为，回到顶部
+  scrollBehavior() {
+    return { top: 0 }
+  }
 })
 
 export default router

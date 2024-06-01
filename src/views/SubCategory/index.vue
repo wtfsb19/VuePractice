@@ -28,7 +28,7 @@ onMounted(() => getSubCategory())
 
 // 无限滚动
 const disabled = ref(false)
-const load =  async () => {
+const load = async () => {
   console.log('load')
   // 当滚动到底部时，页码+1
   reqData.value.page++
@@ -40,6 +40,13 @@ const load =  async () => {
       // 没有数据了，停止加载
       disabled.value = true
   }
+}
+
+// 列表筛选 -- tab切换回调
+const tabChange = () => {
+  console.log('tab切换了', reqData.value.sortField)
+  reqData.value.page = 1
+  getSubCategory()
 }
 
 </script>
@@ -59,7 +66,7 @@ const load =  async () => {
       </el-breadcrumb>
     </div>
     <div class="sub-container">
-      <el-tabs>
+      <el-tabs  v-model="reqData.sortField" @tab-change="tabChange">
         <el-tab-pane label="最新商品" name="publishTime"></el-tab-pane>
         <el-tab-pane label="最高人气" name="orderNum"></el-tab-pane>
         <el-tab-pane label="评论最多" name="evaluateNum"></el-tab-pane>
