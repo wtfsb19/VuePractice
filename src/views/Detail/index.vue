@@ -1,6 +1,5 @@
 <script setup>
 import DetailHot from "@/views/Detail/components/DetailHot.vue";
-import ImageView from "@/components/ImageView/index.vue";
 import {getGoodsDetailAPI} from '@/apis/detail.js'
 import {ref, onMounted} from 'vue'
 import {useRoute} from 'vue-router'
@@ -90,7 +89,7 @@ onMounted(() => getGoodsDetail())
                 </dl>
               </div>
               <!-- sku组件 -->
-
+              <SKU :goods="goods"></SKU>
               <!-- 数据组件 -->
 
               <!-- 按钮组件 -->
