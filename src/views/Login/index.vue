@@ -1,9 +1,13 @@
 <script setup>
 import {ref} from 'vue'
-import { useRouter } from 'vue-router'
-import { loginAPI } from '@/apis/user.js'
-import { ElMessage } from 'element-plus'
+import {useRouter} from 'vue-router'
+import {ElMessage} from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
+import {useUserStore} from "@/stores/user.js";
+
+// 用户信息store
+const userStore = useUserStore()
+
 // form表单对象
 const formData = ref({
   account: 'xiaotuxian001',
@@ -41,15 +45,15 @@ const router = useRouter()
 const formRef = ref(null)
 const loginSubmit = () => {
   // 获取输入账号和密码
-  const { account, password } = formData.value
+  const {account, password} = formData.value
   formRef.value.validate(async (valid) => {
     if (valid) {
       // 校验通过，发送请求
-      await loginAPI(account, password)
+      await userStore.getUserInfo(account, password)
       // 1. 提示用户
-      ElMessage({ type: 'success', message: '登录成功' })
+      ElMessage({type: 'success', message: '登录成功'})
       // 2. 跳转首页
-      router.replace({ path: '/' })
+      router.replace({path: '/'})
     } else {
       // 校验失败，显示错误信息
       return false
@@ -79,7 +83,7 @@ const loginSubmit = () => {
           <a href="javascript:;">账户登录</a>
         </nav>
         <div class="account-box">
-          <div class="form" >
+          <div class="form">
             <el-form label-position="right" label-width="60px"
                      :model="formData"
                      :rules="rules"
