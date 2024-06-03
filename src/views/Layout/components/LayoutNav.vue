@@ -1,4 +1,15 @@
 <script setup>
+import {useUserStore} from "@/stores/user.js";
+import {useRouter} from "vue-router";
+const router = useRouter()
+
+const userStore = useUserStore();
+
+const logoutConfirm = () => {
+  userStore.clearUserInfo();
+  router.replace({path:'/login'})
+}
+
 
 </script>
 
@@ -6,7 +17,7 @@
   <nav class="app-topnav">
     <div class="container">
       <ul>
-        <template v-if="false">
+        <template v-if="userStore.userInfo.account">
           <li>
             <a href="javascript:;"
               ><i class="iconfont icon-user"></i>呵呵呵</a
@@ -17,6 +28,7 @@
               title="确认退出吗?"
               confirm-button-text="确认"
               cancel-button-text="取消"
+              @confirm="logoutConfirm"
             >
               <template #reference>
                 <a href="javascript:;">退出登录</a>
