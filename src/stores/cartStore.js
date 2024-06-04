@@ -6,10 +6,26 @@ export const useCartStore = defineStore('cart', () => {
     const cartList = ref([])
 
     // 定义计算属性
-    // 1. 总数量
+    // 1. 计算总数量
     const allTotal = computed(() => cartList.value.reduce((p, c) => p + c.count, 0))
-    // 2. 总价格
+    // 2. 计算总价格
     const allPrice = computed(() => cartList.value.reduce((p, c) => p + c.price * c.count, 0))
+    // 3. 是否全选
+    const isCheckAll = computed({
+        // 全选按钮的状态
+        get() {
+            return cartList.value.every((item) => item.select)
+        },
+        // 修改全选按钮的状态
+        set(status) {
+            cartList.value.forEach((item) => item.select = status)
+        },
+    })
+    // 4. 计算选中数量
+    const selectTotal = computed(() => cartList.value.filter( (item) => item.select).reduce( (p, c) => p + c.count, 0))
+    // 5. 计算选中价格
+    const selectPrice = computed( () => cartList.value.filter( (item) => item.select).reduce( (p, c) => p + c.price * c.count, 0))
+
 
     // 定义actions
     // 1. 购物车添加商品
@@ -36,6 +52,9 @@ export const useCartStore = defineStore('cart', () => {
         cartList,
         allTotal,
         allPrice,
+        isCheckAll,
+        selectTotal,
+        selectPrice,
         addCart,
         delCart
     }
