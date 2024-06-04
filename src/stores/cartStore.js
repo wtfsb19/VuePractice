@@ -12,7 +12,7 @@ export const useCartStore = defineStore('cart', () => {
     const allPrice = computed(() => cartList.value.reduce((p, c) => p + c.price * c.count, 0))
 
     // 定义actions
-    // 1. 添加商品到购物车
+    // 1. 购物车添加商品
     const addCart = (goods) => {
         console.log('添加', goods)
         //思路：通过匹配传递过来的商品对象中的skuId能不能在cartList中找到，找到了就是添加过
@@ -25,12 +25,19 @@ export const useCartStore = defineStore('cart', () => {
             cartList.value.push(goods)
         }
     }
+    // 2. 购物车删除商品
+    const delCart = (skuId) => {
+        // 1. 通过filter筛选 | 2. 通过indexOf找到索引 + 通过splice删除
+        cartList.value = cartList.value.filter((item) => item.skuId !== skuId)
+    }
+
     // 返回state和action
     return {
         cartList,
         allTotal,
         allPrice,
-        addCart
+        addCart,
+        delCart
     }
 
 }, {

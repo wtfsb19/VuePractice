@@ -12,7 +12,7 @@ const cartStore = useCartStore()
     </a>
     <div class="layer">
       <div class="list">
-        <div class="item" v-for="i in cartStore.cartList" :key="i">
+        <div class="item" v-for="i in cartStore.cartList" :key="i.skuId">
           <RouterLink to="">
             <img :src="i.picture" alt="" />
             <div class="center">
@@ -26,7 +26,7 @@ const cartStore = useCartStore()
               <p class="count">x{{ i.count }}</p>
             </div>
           </RouterLink>
-          <i class="iconfont icon-close-new"></i>
+          <i class="iconfont icon-close-new" @click="cartStore.delCart(i.skuId)"></i>
         </div>
       </div>
       <div class="foot">
