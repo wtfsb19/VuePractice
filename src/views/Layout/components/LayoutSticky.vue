@@ -1,5 +1,5 @@
 <script setup>
-import { useCategoryStore } from '@/stores/category'
+import { useCategoryStore } from '@/stores/categoryStore.js'
 import { storeToRefs } from 'pinia'
 import { useScroll } from '@vueuse/core'
 

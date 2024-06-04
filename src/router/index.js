@@ -6,6 +6,7 @@ import SubCategory from '@/views/SubCategory/index.vue'
 import Detail from '@/views/Detail/index.vue'
 import Login from '@/views/Login/index.vue'
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -40,7 +41,7 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: Login
-    }
+    },
   ],
   // 滚动行为，回到顶部
   scrollBehavior() {

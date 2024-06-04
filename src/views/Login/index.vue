@@ -3,7 +3,7 @@ import {ref} from 'vue'
 import {useRouter} from 'vue-router'
 import {ElMessage} from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
-import {useUserStore} from "@/stores/user.js";
+import {useUserStore} from "@/stores/userStore.js";
 
 // 用户信息store
 const userStore = useUserStore()

@@ -1,9 +1,12 @@
 <script setup>
 import DetailHot from "@/views/Detail/components/DetailHot.vue";
+import SKU from "@/components/SKU/index.vue"
 import {getGoodsDetailAPI} from '@/apis/detail.js'
 import {ref, onMounted} from 'vue'
 import {useRoute} from 'vue-router'
-
+import {ElMessage} from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
+import {useCartStore} from "@/stores/cartStore.js";
 // 创建路由对象
 const route = useRoute()
 
@@ -15,6 +18,42 @@ const getGoodsDetail = async () => {
 }
 onMounted(() => getGoodsDetail())
 
+// sku组件修改函数
+let skuObj = {}
+const skuChange = (sku) => {
+  skuObj = sku
+}
+
+// 商品购物车处理
+const cartStore = useCartStore()
+const count = ref(1)
+
+const countChange = (value) => {
+  count.value = value
+}
+// 1. 新增购物车
+const addCart = () => {
+  // 判断是否是否选择规格(sku组件)
+  if (skuObj.skuId) {
+    // 选择规格，添加数据
+    cartStore.addCart({
+      id: goods.value.id,
+      name: goods.value.name,
+      picture: goods.value.mainPictures[0],
+      price: goods.value.price,
+      skuId: skuObj.skuId,
+      attrsText: skuObj.specsText,  // 商品规格描述
+      count: count.value,  // 商品数量
+      select: true,  // 商品是否选中
+    })
+  } else {
+    // 未选择规格，提示用户
+    ElMessage.warning({
+      type: 'warning',
+      message: '请选择商品规格'
+    })
+  }
+}
 </script>
 
 <template>
@@ -89,12 +128,12 @@ onMounted(() => getGoodsDetail())
                 </dl>
               </div>
               <!-- sku组件 -->
-              <SKU :goods="goods"></SKU>
-              <!-- 数据组件 -->
-
+              <SKU :goods="goods" @change="skuChange"></SKU>
+              <!-- 数量组件 -->
+              <el-input-number v-model="count" :min="1" @change="countChange"/>
               <!-- 按钮组件 -->
               <div>
-                <el-button size="large" class="btn">
+                <el-button size="large" class="btn" @click="addCart">
                   加入购物车
                 </el-button>
               </div>

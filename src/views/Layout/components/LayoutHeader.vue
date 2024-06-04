@@ -1,5 +1,6 @@
 <script setup>
-import {useCategoryStore} from '@/stores/category'
+import {useCategoryStore} from '@/stores/categoryStore.js'
+import Cart from '@/views/Cart/index.vue'
 import {storeToRefs} from 'pinia'
 // 获取store数据
 const categoryStore = useCategoryStore()
@@ -32,6 +33,8 @@ const {categoryList} = storeToRefs(categoryStore)
         <input type="text" placeholder="搜一搜"/>
       </div>
       <!-- 头部购物车 -->
+      <Cart></Cart>
+
     </div>
   </header>
 </template>
