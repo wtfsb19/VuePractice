@@ -29,3 +29,19 @@ export const deleteCartAPI = (skuIdList) => {
         }
     })
 }
+
+// 合并购物车
+// [
+//     {
+//         "skuId": "3672100",
+//         "selected": "true",
+//         "count": 10
+//     },
+// ]
+export const mergeCartAPI = (goodsList) => {
+    return httpInstance({
+        url: '/member/cart/merge',
+        method: 'POST',
+        data: goodsList
+    })
+}

@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
 import {loginAPI} from "@/apis/user.js";
+import {mergeCartAPI} from "@/apis/cart.js";
 import {useCartStore} from "@/stores/cartStore.js";
 
 export const useUserStore = defineStore("user", () => {
@@ -11,13 +12,22 @@ export const useUserStore = defineStore("user", () => {
     const getUserInfo = async (account, password) => {
         const res = await loginAPI(account, password)
         userInfo.value = res.result
+        const dataList = cartStore.cartList.map(item => {
+            return {
+                skuId:item.skuId,
+                selected: item.select,
+                count: item.count
+            }
+        })
+        // 合并购物车
+        await mergeCartAPI(dataList)
         await cartStore.updateCartList()
     }
 
     // 清除数据
     const clearUserInfo = () => {
         userInfo.value = {}
-        cartStore.cartList.value = []  // 无效
+        // cartStore.cartList.value = []  // 无效
         cartStore.clearCart()  // 有效
     }
 
