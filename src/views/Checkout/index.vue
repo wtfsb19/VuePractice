@@ -2,23 +2,29 @@
 import {generateOrderAPI} from '@/apis/checkout.js'
 import {ref, onMounted} from 'vue'
 
-const toggleFlag = ref(false)
-
-const curAddress = {}  // 当前触发地址对象
+const toggleFlag = ref(false)  // 模态框开关
+const activeAddress = ref({} )  // 当前触发地址对象
+const curAddress = ref({})  // 当前使用地址对象
 
 // 获取订单页信息
 const checkInfo = ref({})  // 订单对象
 const generateOrder = async () => {
   const res = await generateOrderAPI()
   checkInfo.value = res.result
+  // 更新用户地址
+  curAddress.value = res.result.userAddresses.find(item => item.isDefault === 0)
 }
-
-
 onMounted(() => generateOrder())
 
-
-
-
+// 模态框切换地址
+const changeAddress = (item) => {
+  activeAddress.value = item
+}
+// 确认按钮更新地址
+const confirm = () => {
+  curAddress.value = activeAddress.value
+  toggleFlag.value = false  // 关闭模态框
+}
 </script>
 
 <template>
@@ -121,7 +127,12 @@ onMounted(() => generateOrder())
   <!-- 切换地址 -->
   <el-dialog title="切换收货地址" width="30%" center v-model="toggleFlag">
   <div class="addressWrapper">
-    <div class="text item" v-for="item in checkInfo.userAddresses"  :key="item.id">
+    <div class="text item"
+         v-for="item in checkInfo.userAddresses"
+         :key="item.id"
+         @click="changeAddress(item)"
+         :class="activeAddress.id === item.id ? 'active' : ''">
+    >
       <ul>
       <li><span>收<i />货<i />人：</span>{{ item.receiver }} </li>
       <li><span>联系方式：</span>{{ item.contact }}</li>
@@ -132,7 +143,7 @@ onMounted(() => generateOrder())
   <template #footer>
     <span class="dialog-footer">
       <el-button>取消</el-button>
-      <el-button type="primary">确定</el-button>
+      <el-button type="primary" @click="confirm">确定</el-button>
     </span>
   </template>
 </el-dialog>
