@@ -3,13 +3,15 @@ import {getOrderAPI} from "@/apis/pay.js";
 import {useRoute} from 'vue-router'
 import {ref, onMounted} from 'vue'
 const route = useRoute()
-const orderInfo = ref({})
 
+// 获取订单信息和状态
+const orderInfo = ref({})
 const getOrderInfo = async () => {
   const res = await getOrderAPI(route.query.orderId)
   orderInfo.value = res.result
 }
 onMounted(() => getOrderInfo())
+
 </script>
 
 
