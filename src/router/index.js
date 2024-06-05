@@ -6,6 +6,8 @@ import SubCategory from '@/views/SubCategory/index.vue'
 import Detail from '@/views/Detail/index.vue'
 import Login from '@/views/Login/index.vue'
 import CartList from "@/views/Cart/CartList.vue";
+import Checkout from "@/views/Checkout/index.vue";
+
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,6 +17,7 @@ const router = createRouter({
             name: 'layout',
             component: Layout,
             children: [
+                // 一切需要导航条的页面都是该组件的子组件
                 {
                     path: '',
                     name: 'home',
@@ -39,6 +42,11 @@ const router = createRouter({
                     path: 'cart/list',
                     name: 'cartList',
                     component: CartList,
+                },
+                {
+                    path: 'order/checkout',
+                    name: 'checkout',
+                    component: Checkout
                 }
             ]
         },

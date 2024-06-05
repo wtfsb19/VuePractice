@@ -12,6 +12,7 @@ export const useUserStore = defineStore("user", () => {
     const getUserInfo = async (account, password) => {
         const res = await loginAPI(account, password)
         userInfo.value = res.result
+        console.log(typeof cartStore.cartList)
         const dataList = cartStore.cartList.map(item => {
             return {
                 skuId:item.skuId,
